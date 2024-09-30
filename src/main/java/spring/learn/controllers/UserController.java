@@ -3,7 +3,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import spring.learn.model.UserModel;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +19,11 @@ public class UserController {
         userMap.put("Ratul", new UserModel("Ratul", "Khan", 1234));
     }
 
+    @RequestMapping("/")
+    public String home() {
+        return "Hello! Welcome to the amazing world of Spring";
+    }
+
     @GetMapping("/getUser/{user}")
     public ResponseEntity<UserModel> getUser(@PathVariable("user") String user) {
         if (userMap.containsKey(user)) {
@@ -23,6 +31,14 @@ public class UserController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/getUsers")
+    public ResponseEntity<List<UserModel>> getUsers() {
+        List<UserModel> userModelList = new ArrayList<>();
+        userModelList.add(userMap.get("Nahid"));
+        userModelList.add(userMap.get("Ratul"));
+        return new ResponseEntity<>(userModelList, HttpStatus.OK);
     }
 
     @PostMapping("/addUser")
